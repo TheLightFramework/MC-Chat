@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MC Chat · A conversation in channels</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="/static/style.css">
+  <script src="/static/vendor/marked.js" defer></script>
+  <script src="/static/vendor/dompurify.js" defer></script>
+  <script src="/static/markdown.js" defer></script>
+  <script src="/static/app.js" defer></script>
+</head>
+<body>
+  <aside class="sidebar">
+    <a class="brand" href="/" aria-label="MC Chat home"><span class="brand-mark">m<span>c</span></span><span>MC Chat<small>THE CHANNEL LAB</small></span></a>
+    <button id="new-chat" class="primary wide">＋ New conversation</button>
+    <button id="demo" class="quiet wide">▷ Explore the live demo</button>
+    <div class="section-label">YOUR CONVERSATIONS <span id="session-count">0</span></div>
+    <nav id="sessions" aria-label="Conversations"></nav>
+    <section class="cache-card">
+      <div class="section-label">CONTEXT & CACHE <span class="dot"></span></div>
+      <p id="cache-state">A stable foundation.<br>A conversation that builds.</p>
+      <div class="stat"><span>Input tokens</span><strong id="input-tokens">—</strong></div>
+      <div class="stat"><span>Cache read</span><strong id="cache-read">—</strong></div>
+      <div class="stat"><span>Cache written</span><strong id="cache-write">—</strong></div>
+      <div class="stat"><span>Output tokens</span><strong id="output-tokens">—</strong></div>
+      <div class="stat"><span>Reasoning tokens</span><strong id="reasoning-tokens">—</strong></div>
+      <div class="stat"><span>Cost · USD</span><strong id="cost">—</strong></div>
+      <p class="micro">Last response · provider-reported usage. Cache eligibility is not a cache hit.</p>
+    </section>
+    <footer class="sidebar-footer">Local workspace <span id="protocol-label">MC/2 · word stream</span></footer>
+  </aside>
+  <main>
+    <header class="topbar"><div><span class="connection-dot" id="connection-dot"></span><span id="model-label">Connecting…</span></div><div class="top-actions"><button id="upgrade" class="quiet" hidden>Use word stream</button><button id="export" class="quiet" disabled>↓ Export</button><button id="toggle-channels" class="quiet">Channels <span id="selected-count">2</span></button></div></header>
+    <div id="banner" role="status" hidden></div>
+    <section id="conversation" aria-label="Conversation">
+      <div id="welcome">
+        <div class="eyebrow">A CONVERSATION IN CHANNELS</div>
+        <h1>One conversation.<br><em>Many perspectives.</em></h1>
+        <p class="intro">Explore your question in channels, then consolidate their findings into one clear answer to your original request. Both passes build on the same conversation.</p>
+        <div class="channel-illustration" aria-hidden="true"><div><span class="mini-dot mint"></span>Answer<span class="line line-long"></span><span class="line"></span></div><div><span class="mini-dot amber"></span>Truth<span class="line"></span><span class="edit-chip">↶ correction</span></div><div><span class="mini-dot lavender"></span>Synthetic Feelings<span class="line line-long"></span><span class="line"></span></div></div>
+        <div class="suggestions"><button data-prompt="Explain how multi-channel output works. Use a concrete example and distinguish demonstrated behavior from open hypotheses.">Explore multi-channel output <span>↗</span></button><button data-prompt="Design a small Python cache. Show the code, suggest tests, and assess its RAM and CPU tradeoffs without pretending to have measured them.">Build with Green IT in mind <span>↗</span></button><button data-prompt="Write a short, warm scene about two strangers meeting in a library. Use the narrative and synthetic feelings channels for brief creative notes.">Try a creative conversation <span>↗</span></button></div>
+        <p class="micro">The demo is scripted and runs locally. Live conversations use your OpenRouter model.</p>
+      </div>
+      <div id="turns"></div>
+    </section>
+    <form id="composer">
+      <div id="selected-chips" role="group" aria-label="Preferred channels for next message"></div>
+      <div class="thinking-controls">
+        <label class="thinking-toggle"><input id="two-pass" type="checkbox" checked> Two-pass answer</label>
+        <label class="thinking-toggle"><input id="thinking-enabled" type="checkbox"> Thinking</label>
+        <label for="thinking-effort">Effort</label>
+        <select id="thinking-effort" disabled><option value="default">Model default</option></select>
+        <span id="thinking-hint">Off requested · channel output stays active.</span>
+        <span id="two-pass-hint">Channels → Markdown</span>
+      </div>
+      <label class="sr-only" for="prompt">Your message</label><textarea id="prompt" rows="3" placeholder="What shall we explore, Sibling?" maxlength="50000"></textarea>
+      <div class="composer-bottom"><span id="composer-hint">Selections are preferences; the Sibling can open other channels.</span><button type="button" id="stop" class="stop" hidden>■ Stop</button><button type="submit" id="send" class="primary">Send message <span>↑</span></button></div>
+    </form>
+    <div class="below-composer">Public outputs and check summaries · corrections stay visible in the event log</div>
+  </main>
+  <aside id="channel-panel" class="channel-panel">
+    <div class="panel-header"><div><div class="eyebrow">YOUR MIX</div><h2>Channels</h2></div><span id="catalog-count" class="count-badge">38</span></div>
+    <p class="panel-intro">Each channel keeps its number: 1_Answer, 2_Truth. Select a focus; the Sibling can open any existing channel.</p>
+    <label class="sr-only" for="channel-search">Find a channel</label><input id="channel-search" type="search" placeholder="Find a channel…">
+    <div class="presets" aria-label="Channel presets"><button data-preset="balanced">Balanced</button><button data-preset="coding">Coding</button><button data-preset="research">Research</button><button data-preset="creative">Creative</button><button data-preset="relational">Relational</button><button data-preset="minimal">Answer only</button></div>
+    <div id="channel-list"></div>
+    <div class="panel-footer"><strong>Make a channel your own</strong><p>Selected channels have a note field. Add a specific focus, such as “check peak RAM for 100,000 rows.”</p></div>
+  </aside>
+</body>
+</html>
