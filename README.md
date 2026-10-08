@@ -4,6 +4,8 @@ A local multi-channel chat laboratory: Python/FastAPI, OpenRouter streaming, and
 a browser frontend with live numbered-word corrections (MC/2) and automatic
 consolidation into Markdown. No Node build step or runtime CDN calls.
 
+![Screenshot](Screenshot.png)
+
 **Experimental open-source release · MIT license · MC Framework 2.6**
 
 Choose perspectives such as Answer, Creativity, Imagery, Correctness, or Green IT.
@@ -44,6 +46,7 @@ varies by model and settings. See [MCFramework.md](MCFramework.md) for the contr
    ```
 
    Use the exact slug shown by OpenRouter. No model is silently selected for you.
+
 3. Run `./start.ps1` in PowerShell from this folder. It creates `.venv`, installs
    the runtime dependencies, and runs the server.
 4. Open <http://127.0.0.1:8765>.
@@ -237,16 +240,16 @@ older framework-2.4 chats also contain 39 · Self Prompt.
 This reconstructs "The result is 4." in Answer and "Check: 2+2=4." in
 Truth. The raw stream and deleted `5.` remain in the event log and exported JSON.
 
-| Syntax | Operation |
-|---|---|
-| `N_word` | Append one word, with automatic spacing |
-| `N_<` | Remove the last emitted unit from channel N |
-| `N_<_K` | Remove the last K units |
-| `N_<_K_replacement` | Remove K units and append one replacement payload |
-| `N_~payload` | Append exactly, without automatic spacing |
-| `N_!clear` | Clear this response's channel, retaining an audit record |
-| `N_!done`, `N_!active` | Finish participation or rejoin the active rotation |
-| `N_!skip` | Yield this channel's slot without adding text |
+| Syntax                 | Operation                                                |
+| ---------------------- | -------------------------------------------------------- |
+| `N_word`               | Append one word, with automatic spacing                  |
+| `N_<`                  | Remove the last emitted unit from channel N              |
+| `N_<_K`                | Remove the last K units                                  |
+| `N_<_K_replacement`    | Remove K units and append one replacement payload        |
+| `N_~payload`           | Append exactly, without automatic spacing                |
+| `N_!clear`             | Clear this response's channel, retaining an audit record |
+| `N_!done`, `N_!active` | Finish participation or rejoin the active rotation       |
+| `N_!skip`              | Yield this channel's slot without adding text            |
 
 ### Required interleaving (framework 2.1)
 
@@ -417,21 +420,22 @@ There is no automatic context truncation: start a new chat if you reach the mode
 context limit. Very long chats and many active channels increase token costs.
 
 References checked during implementation:
+
 - [OpenRouter prompt caching](https://openrouter.ai/docs/guides/best-practices/prompt-caching)
 - [OpenRouter streaming](https://openrouter.ai/docs/api_reference/streaming)
 - [Chat completions API](https://openrouter.ai/docs/api/api-reference/chat/create-a-chat-completion)
 
 ## Settings
 
-| Variable | Default | Meaning |
-|---|---|---|
-| `OPENROUTER_API_KEY` | empty | Backend-only API key |
-| `OPENROUTER_MODEL` | empty | Exact OpenRouter model slug, pinned per chat |
-| `MC_CACHE_MODE` | `explicit` | `explicit` markers or provider-managed `automatic` |
-| `MC_PROVIDER_PIN_SECONDS` | `1800` | Idle routing lock in seconds, 60–86400; extended to cover requested TTL where supported |
-| `MC_MAX_TOKENS` | `8192` | Output budget, 128–65536; must also fit the selected model |
-| `MC_TEMPERATURE` | `0.7` | Sampling temperature, 0–2 |
-| `MC_TIMEOUT_SECONDS` | `120` | Upstream read timeout, 10–600 seconds |
+| Variable                  | Default    | Meaning                                                                                 |
+| ------------------------- | ---------- | --------------------------------------------------------------------------------------- |
+| `OPENROUTER_API_KEY`      | empty      | Backend-only API key                                                                    |
+| `OPENROUTER_MODEL`        | empty      | Exact OpenRouter model slug, pinned per chat                                            |
+| `MC_CACHE_MODE`           | `explicit` | `explicit` markers or provider-managed `automatic`                                      |
+| `MC_PROVIDER_PIN_SECONDS` | `1800`     | Idle routing lock in seconds, 60–86400; extended to cover requested TTL where supported |
+| `MC_MAX_TOKENS`           | `8192`     | Output budget, 128–65536; must also fit the selected model                              |
+| `MC_TEMPERATURE`          | `0.7`      | Sampling temperature, 0–2                                                               |
+| `MC_TIMEOUT_SECONDS`      | `120`      | Upstream read timeout, 10–600 seconds                                                   |
 
 If the provider rejects explicit cache blocks, try `automatic`. Non-MC output
 produces visible protocol errors rather than being silently interpreted as valid
